@@ -8,7 +8,7 @@ using TRaI.APIs.Ingredients;
 using TRaI.UIs.UIElements;
 using UIPanel = TRaI.UIs.UIElements.UIPanel;
 
-namespace TRaI.Contents.VanillaRecipes.ByHand
+namespace TRaI.Contents.VanillaRecipes.NPCDrop
 {
     public class NPCDropRecipeCategory : RecipeCategory
     {

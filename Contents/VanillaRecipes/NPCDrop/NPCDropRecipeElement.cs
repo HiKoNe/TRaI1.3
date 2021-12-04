@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using TRaI.APIs;
 using TRaI.APIs.Ingredients;
 
-namespace TRaI.Contents.VanillaRecipes.ByHand
+namespace TRaI.Contents.VanillaRecipes.NPCDrop
 {
     public class NPCDropRecipeElement : IRecipeElement
     {
