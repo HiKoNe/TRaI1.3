@@ -1,0 +1,13 @@
+[i:903] This mod adds a system for:
+- Advanced viewing items and recipes.
+
+[i:327] Check Key Bindings for settings key:
+- Use "R" on Item to view Recipe.
+- Use "U" on Item to view Usage.
+
+[i:3095] Check Mod Settings for Info Display:
+- View ID on Item.
+- View Mod Name on Item.
+- Settings item panel size.
+
+All Issue in Discord*

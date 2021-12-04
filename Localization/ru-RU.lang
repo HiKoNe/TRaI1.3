@@ -1,0 +1,24 @@
+CategoryPanel=Открыть все категории.
+HistoryPanel=Очистить историю.
+PagePanel=На первую страницу.
+
+CategoryText={0} / {1} Категории ({2}) [{3}]
+HistoryText={0} / {1} История
+PageText={0} / {1} Страницы ({2}) [{3}]
+
+TRaIItems=TRaI Предметы
+TRaIRecipes=TRaI Рецепты
+TRaIConfig=TRaI Настройки
+
+LootEmulations=Эмуляция добычи: {0}
+BossBags=Сумки для боссов
+ByHand=Вручную
+Extractinator=Экстрактор
+FishCrates=Ящики для рыбы
+Fishing=Рыбалка
+NPCDrops=Добыча NPC
+NPCShop=Магазин NPC
+VanillaBags=Ванильные сумки
+ModBags=Модовые сумки
+
+RecipeAdded=Рецепт добавлен: '{0}'
