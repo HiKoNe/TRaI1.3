@@ -25,7 +25,13 @@ namespace TRaI.Contents.VanillaRecipes.ModBags
             for (int i = 0; i < ItemLoader.ItemCount; i++)
             {
                 var modItem = ItemLoader.GetItem(i);
-                if (modItem != null && modItem.CanRightClick())
+                bool flag = false;
+                try
+                {
+                    flag = modItem.CanRightClick();
+                }
+                catch { }
+                if (modItem != null && flag)
                 {
                     var method = modItem.GetType().GetMethod("RightClick");
                     if (method != null)

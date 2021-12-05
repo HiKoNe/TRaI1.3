@@ -1,6 +1,6 @@
 displayName = Terraria Recipes and Items
 author = HiKoNe
-version = 0.1.1.0
+version = 0.1.2.0
 homepage = https://forums.terraria.org/index.php?threads/hi-mods.109167/#:~:text=Terraria%20Recipes%20and%20Items
 hideCode = false
 hideResources = false

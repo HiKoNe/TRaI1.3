@@ -89,11 +89,11 @@ namespace TRaI
             {
                 foreach (var modNPC in Mod_npcs(mod).Values)
                 {
-                    Modify("SetupShop");
+                    //Modify("SetupShop");
                     //Modify("SpecialNPCLoot", true);
                     //Modify("PreNPCLoot", true);
                     //Modify("NPCLoot");
-                    Modify("BossLoot");
+                    //Modify("BossLoot");
                     void Modify(string name, bool isBool = false)
                     {
                         var method = modNPC.GetType().GetMethod(name);
