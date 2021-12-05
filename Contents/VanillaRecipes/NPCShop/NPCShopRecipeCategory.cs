@@ -23,6 +23,7 @@ namespace TRaI.Contents.VanillaRecipes.NPCShop
         public override void InitRecipes()
         {
             TRaI.Hack = true;
+
             for (int i = 0; i < NPCLoader.NPCCount; i++)
             {
                 var npc = new NPC();
@@ -30,6 +31,7 @@ namespace TRaI.Contents.VanillaRecipes.NPCShop
                 if (npc.townNPC || i == NPCID.SkeletonMerchant)
                     Recipes.Add(new NPCShopRecipeElement(i));
             }
+
             TRaI.Hack = false;
         }
 

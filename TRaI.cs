@@ -92,9 +92,9 @@ namespace TRaI
                     Modify("SetupShop");
                     //Modify("SpecialNPCLoot", true);
                     //Modify("PreNPCLoot", true);
-                    Modify("NPCLoot");
+                    //Modify("NPCLoot");
                     Modify("BossLoot");
-                    void Modify(string name, bool hasBool = false)
+                    void Modify(string name, bool isBool = false)
                     {
                         var method = modNPC.GetType().GetMethod(name);
                         if (method != null && method.DeclaringType != typeof(ModNPC))
@@ -102,7 +102,7 @@ namespace TRaI
                             HookEndpointManager.Modify(method, new Action<ILContext>(il =>
                             {
                                 var c = new ILCursor(il);
-                                ModifyIL(c, hasBool);
+                                ModifyIL(c, isBool);
                             }));
                         }
                     }
@@ -314,12 +314,12 @@ namespace TRaI
             //for (int i = 0; i < 100; i++)
             //{
             //    var instr = c.Instrs[i];
-            //    string str = instr.OpCode.ToString();
+            //    string str = i + ": " + instr.OpCode.ToString();
             //    if (instr.Operand != null)
             //    {
-            //        str += ": ";
+            //        str += " > ";
             //        if (instr.Operand is ILLabel l)
-            //            str += l.Target.OpCode.ToString();
+            //            str += c.Instrs.IndexOf(l.Target) + ": " + l.Target.OpCode.ToString();
             //        else
             //            str += instr.Operand.ToString();
             //    }
@@ -327,8 +327,71 @@ namespace TRaI
             //}
         }
 
-        public static void ModifyIL(ILCursor c, bool hasBool = false)
+        public static void ModifyIL(ILCursor c, bool isBool = false)
         {
+            ILLabel label = default;
+            while (c.TryGotoNext(i =>
+            {
+                if (i.Operand is ILLabel l && !i.OpCode.ToString().StartsWith("beq") && !i.OpCode.ToString().StartsWith("bge") && !i.OpCode.ToString().StartsWith("bgt") && !i.OpCode.ToString().StartsWith("ble") && !i.OpCode.ToString().StartsWith("blt") && !i.OpCode.ToString().StartsWith("bne"))
+                {
+                    label = l;
+                    return true;
+                }
+                return false;
+            }))
+            {
+                var l = c.MarkLabel();
+                var l3 = c.MarkLabel();
+                c.Index++;
+                c.Emit(OpCodes.Nop);
+                l3.Target = c.Prev;
+                c.GotoLabel(l, MoveType.Before);
+
+                var l2 = c.DefineLabel();
+                c.Next.Operand = l2;
+                c.GotoLabel(label, MoveType.Before);
+                bool flag = false;
+                if (c.Prev.OpCode != OpCodes.Nop)
+                {
+                    flag = true;
+                    c.Emit(OpCodes.Nop);
+                }
+                l2.Target = c.Prev;
+                if (flag)
+                {
+                    c.Emit(OpCodes.Ldsfld, typeof(TRaI).GetField("hack", BindingFlags.Static | BindingFlags.NonPublic));
+                    c.Emit(OpCodes.Brtrue, l3);
+                    var l4 = c.MarkLabel();
+                    c.Index -= 3;
+                    c.Emit(OpCodes.Br, l4);
+                    c.Index += 3;
+                }
+            }
+
+            if (isBool)
+                return;
+
+            c.Index = 0;
+            int retCount = c.Instrs.Count(i => i.OpCode == OpCodes.Ret);
+            for (int r = 0; r < retCount - 1; r++)
+            {
+                if (!c.TryGotoNext(i => i.MatchRet()))
+                    break;
+
+                var l = c.DefineLabel();
+                c.Emit(OpCodes.Ldsfld, typeof(TRaI).GetField("hack", BindingFlags.Static | BindingFlags.NonPublic));
+                c.Emit(OpCodes.Brtrue, l);
+                c.Index++;
+                c.MarkLabel(l);
+            }
+        }
+
+        static void Chest_SetupShop(ILContext il)
+        {
+            var c = new ILCursor(il);
+
+            //ModifyIL(c);
+
             while (c.TryGotoNext(i => i.MatchBrtrue(out _)))
             {
                 c.EmitDelegate<Func<bool>>(() => !Hack);
@@ -353,17 +416,8 @@ namespace TRaI
                 c.EmitDelegate<Func<bool>>(() => Hack);
                 c.Emit(OpCodes.Brtrue, l);
                 c.Index++;
-                if (hasBool)
-                    c.Emit(OpCodes.Pop);
                 c.MarkLabel(l);
             }
-        }
-
-        static void Chest_SetupShop(ILContext il)
-        {
-            var c = new ILCursor(il);
-
-            ModifyIL(c);
         }
 
         static void NPC_SpawnOnPlayer(On.Terraria.NPC.orig_SpawnOnPlayer orig, int plr, int Type)

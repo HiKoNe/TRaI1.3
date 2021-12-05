@@ -21,8 +21,7 @@ namespace TRaI.Contents.VanillaRecipes.NPCDrop
 
             var npc = new NPC();
             npc.SetDefaults(npcID);
-            TRaI.Hack = true;
-
+            
             NPCOutputs = LootDropEmulation.Emulate(() =>
             {
                 try
@@ -32,10 +31,8 @@ namespace TRaI.Contents.VanillaRecipes.NPCDrop
                 catch
                 {
                 }
-            }, 1);
+            }, 50);
             NPCOutputs.RemoveAll(i => i.ItemID == ItemID.Heart || i.ItemID == ItemID.LesserHealingPotion);
-
-            TRaI.Hack = false;
         }
 
         public void GetIngredients(RecipeIngredients ingredients)

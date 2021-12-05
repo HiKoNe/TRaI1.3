@@ -19,6 +19,8 @@ namespace TRaI.Contents.VanillaRecipes.NPCDrop
 
         public override void InitRecipes()
         {
+            TRaI.Hack = true;
+
             LootDropEmulation.SetLoadingName(Name.Value);
 
             for (int i = -65; i < NPCLoader.NPCCount; i++)
@@ -26,6 +28,8 @@ namespace TRaI.Contents.VanillaRecipes.NPCDrop
                 LootDropEmulation.SetLoadingProgress((i + 65) / (float)(NPCLoader.NPCCount + 65));
                 Recipes.Add(new NPCDropRecipeElement(i));
             }
+
+            TRaI.Hack = false;
         }
 
         public override void InitElement(UIRecipeLayout layout, IRecipeElement recipeElement, RecipeIngredients ingredients)
